@@ -1,24 +1,21 @@
 const express = require('express');
 const cors = require('cors');
-const express = require('express');
-const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const { application } = require('express');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json())
 
-const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@cluster0.ao8vh.mongodb.net/?retryWrites=true&w=majority`;
+
+const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@cluster0.z7as8jh.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
 
 async function run() {
     try {
         await client.connect();
-
-        const toDoCollection = client.db('toDoList').collection('notes');
 
       
         console.log('Database connected')
