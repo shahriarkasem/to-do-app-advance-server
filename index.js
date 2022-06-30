@@ -17,6 +17,46 @@ async function run() {
     try {
         await client.connect();
 
+        const toDoCollection = client.db('toDoList').collection('notes');
+
+        // get
+        app.get('/notes', async (req, res) => {
+            const email = req.query.email;
+            const query = {email: email};
+            const result = await toDoCollection.find(query).sort({ _id: -1 }).toArray();
+            res.send(result);
+        })
+
+        // post
+        app.post('/add', async (req, res) => {
+            const add = req.body;
+            const result = await toDoCollection.insertOne(add);
+            res.send(result);
+        })
+
+        // put
+
+        // patch
+        app.patch('/update', async(req,res) => {
+            const data = req.body;
+            const id = data.id;
+            const filter = {_id: ObjectId(id)}
+            const updateDoc = {
+                $set: {
+                    complete: data.complete,
+                }
+            }
+            const result = await toDoCollection.updateOne(filter, updateDoc)
+            res.send(result);
+        })
+
+        // delete
+        app.delete('/delete/note/:id', async (req, res) => {
+            const id = req.params.id;
+           const query = {_id: ObjectId(id)};
+           const result = await toDoCollection.deleteOne(query);
+           res.send(result)
+        })
       
         console.log('Database connected')
     }
