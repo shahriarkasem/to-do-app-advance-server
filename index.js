@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -17,10 +17,8 @@ async function run() {
     try {
         await client.connect();
 
-        const toDoCollection = client.db('toDoList').collection('notes');
-
-        // get
-        app.get('/notes', async (req, res) => {
+         // get
+         app.get('/notes', async (req, res) => {
             const email = req.query.email;
             const query = {email: email};
             const result = await toDoCollection.find(query).sort({ _id: -1 }).toArray();
@@ -34,7 +32,7 @@ async function run() {
             res.send(result);
         })
 
-        // put
+         // put
 
         // patch
         app.patch('/update', async(req,res) => {
@@ -48,14 +46,6 @@ async function run() {
             }
             const result = await toDoCollection.updateOne(filter, updateDoc)
             res.send(result);
-        })
-
-        // delete
-        app.delete('/delete/note/:id', async (req, res) => {
-            const id = req.params.id;
-           const query = {_id: ObjectId(id)};
-           const result = await toDoCollection.deleteOne(query);
-           res.send(result)
         })
       
         console.log('Database connected')
