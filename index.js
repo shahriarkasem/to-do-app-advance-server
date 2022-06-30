@@ -20,9 +20,15 @@ async function run() {
         const toDoCollection = client.db('toDoList').collection('notes');
 
          // get
-         app.get('/notes', async (req, res) => {
+         app.get('/notes/ongoing', async (req, res) => {
             const email = req.query.email;
-            const query = {email: email};
+            const query = {email: email, complete: false};
+            const result = await toDoCollection.find(query).sort({ _id: -1 }).toArray();
+            res.send(result);
+        })
+         app.get('/notes/complete', async (req, res) => {
+            const email = req.query.email;
+            const query = {email: email, complete: true};
             const result = await toDoCollection.find(query).sort({ _id: -1 }).toArray();
             res.send(result);
         })
