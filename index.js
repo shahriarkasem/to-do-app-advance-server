@@ -17,6 +17,8 @@ async function run() {
     try {
         await client.connect();
 
+        const toDoCollection = client.db('toDoList').collection('notes');
+
          // get
          app.get('/notes', async (req, res) => {
             const email = req.query.email;
