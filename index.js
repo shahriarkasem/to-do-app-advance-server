@@ -55,6 +55,18 @@ async function run() {
             const result = await toDoCollection.updateOne(filter, updateDoc)
             res.send(result);
         })
+        app.patch('/update/note', async(req,res) => {
+            const data = req.body;
+            const id = data.id;
+            const filter = {_id: ObjectId(id)}
+            const updateDoc = {
+                $set: {
+                    description: data.description,
+                }
+            }
+            const result = await toDoCollection.updateOne(filter, updateDoc)
+            res.send(result);
+        })
 
         // delete
         app.delete('/delete/note/:id', async (req, res) => {
